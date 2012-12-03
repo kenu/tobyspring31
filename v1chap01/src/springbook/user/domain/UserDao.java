@@ -7,8 +7,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class UserDao {
+	private SimpleConnectionMaker simpleConnectionMaker;
+	
+	public UserDao() {
+		simpleConnectionMaker = new SimpleConnectionMaker();
+	}
+	
     public void add(User user) throws ClassNotFoundException, SQLException {
-    	Connection c = getConnection();
+    	Connection c = simpleConnectionMaker.makeNewConnection();
     	
     	PreparedStatement ps = c.prepareStatement(
     			"insert into users(id, name, password) values(?,?,?)");
@@ -23,7 +29,7 @@ public class UserDao {
     }
 
     public User get(String id) throws ClassNotFoundException, SQLException {
-    	Connection c = getConnection();
+    	Connection c = simpleConnectionMaker.makeNewConnection();
     	
     	PreparedStatement ps = c.prepareStatement(
     			"select * from users where id = ?");
@@ -42,14 +48,6 @@ public class UserDao {
     	
 		return user;
     }
-    
-    private Connection getConnection() throws ClassNotFoundException,
-    SQLException {
-    	Class.forName("com.mysql.jdbc.Driver");
-    	Connection c = DriverManager.getConnection(
-    			"jdbc:mysql://localhost/springbook?useUnicode=true&characterEncoding=UTF8&jdbcCompliantTruncation=false&useOldUTF8Behavior=true", "spring", "book");
-    	return c;
-    }
-    
+        
 }
 
