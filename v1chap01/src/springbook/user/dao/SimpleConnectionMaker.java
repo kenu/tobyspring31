@@ -1,18 +1,17 @@
-package springbook.user.domain;
+package springbook.user.dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class NUserDao extends UserDao {
+public class SimpleConnectionMaker {
 
-	@Override
-	public Connection getConnection() throws ClassNotFoundException,
+	public Connection makeNewConnection() throws ClassNotFoundException,
 			SQLException {
-		Class.forName("com.mysql.jdbc.Driver");
+    	Class.forName("com.mysql.jdbc.Driver");
     	Connection c = DriverManager.getConnection(
     			"jdbc:mysql://localhost/springbook?useUnicode=true&characterEncoding=UTF8&jdbcCompliantTruncation=false&useOldUTF8Behavior=true", "spring", "book");
-		return c;
+    	return c;
 	}
-	
+
 }

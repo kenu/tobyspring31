@@ -10,7 +10,7 @@ public class UserDaoTest {
 	 * @throws ClassNotFoundException 
 	 */
 	public static void main(String[] args) throws ClassNotFoundException, SQLException {
-		UserDao dao = new NUserDao();
+		UserDao dao = new UserDao();
 		
 		User user = new User();
 		user.setId("whiteship");
