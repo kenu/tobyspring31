@@ -1,9 +1,8 @@
 package springbook.user.dao;
 
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.support.GenericXmlApplicationContext;
 
-import springbook.user.domain.UserDao;
 
 public class DaoFactoryTest {
 
@@ -18,8 +17,8 @@ public class DaoFactoryTest {
 		System.out.println(dao1);
 		System.out.println(dao2);
 
-		ApplicationContext context = new AnnotationConfigApplicationContext(
-				DaoFactory.class);
+		ApplicationContext context = new GenericXmlApplicationContext(
+				"applicationContext.xml");
 		
 		UserDao dao3 = context.getBean("userDao", UserDao.class);
 		UserDao dao4 = context.getBean("userDao", UserDao.class);
