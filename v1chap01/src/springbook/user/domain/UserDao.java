@@ -9,15 +9,13 @@ import springbook.user.dao.ConnectionMaker;
 
 public class UserDao {
 	private ConnectionMaker connectionMaker;
-	private Connection c;
-	private User user;
-
+	
 	public UserDao(ConnectionMaker connectionMaker) {
 		this.connectionMaker = connectionMaker;
 	}
 	
     public void add(User user) throws ClassNotFoundException, SQLException {
-    	c = connectionMaker.makeConnection();
+    	Connection c = connectionMaker.makeConnection();
     	
     	PreparedStatement ps = c.prepareStatement(
     			"insert into users(id, name, password) values(?,?,?)");
@@ -32,7 +30,7 @@ public class UserDao {
     }
 
     public User get(String id) throws ClassNotFoundException, SQLException {
-    	c = connectionMaker.makeConnection();
+    	Connection c = connectionMaker.makeConnection();
     	
     	PreparedStatement ps = c.prepareStatement(
     			"select * from users where id = ?");
@@ -40,8 +38,7 @@ public class UserDao {
     	
     	ResultSet rs = ps.executeQuery();
     	rs.next();
-    	
-    	user = new User();
+    	User user = new User();
     	user.setId(rs.getString("id"));
     	user.setName(rs.getString("name"));
     	user.setPassword(rs.getString("password"));
