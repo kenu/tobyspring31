@@ -6,7 +6,6 @@
     <bean id="connectionMaker" class="springbook.user.dao.DConnectionMaker" />
     
     <bean id="userDao" class="springbook.user.dao.UserDao">
-        <property name="connectionMaker" ref="connectionMaker" />
     </bean>
 
 </beans>
