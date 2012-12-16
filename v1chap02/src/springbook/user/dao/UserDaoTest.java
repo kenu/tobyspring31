@@ -2,6 +2,7 @@ package springbook.user.dao;
 
 import java.sql.SQLException;
 
+import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.GenericXmlApplicationContext;
 
@@ -10,11 +11,11 @@ import springbook.user.domain.User;
 public class UserDaoTest {
 
 	/**
-	 * @param args
 	 * @throws SQLException 
 	 * @throws ClassNotFoundException 
 	 */
-	public static void main(String[] args) throws ClassNotFoundException, SQLException {
+	@Test
+	public void addAndGet() throws ClassNotFoundException, SQLException {
 		ApplicationContext context = new GenericXmlApplicationContext(
 				"applicationContext.xml");
 		
