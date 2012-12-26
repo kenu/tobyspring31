@@ -67,8 +67,7 @@ public class UserDao {
     		@Override
     		public PreparedStatement makePreparedStatement(Connection c)
     				throws SQLException {
-    			PreparedStatement ps = c.prepareStatement("delete from users");
-    			return ps;
+    			return c.prepareStatement("delete from users");
     		}
 		});
     }
