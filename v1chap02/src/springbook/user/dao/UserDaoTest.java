@@ -5,6 +5,7 @@ import static org.junit.Assert.assertThat;
 
 import java.sql.SQLException;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.GenericXmlApplicationContext;
@@ -13,21 +14,27 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import springbook.user.domain.User;
 
 public class UserDaoTest {
+	UserDao dao;
+
+	@Before
+	public void setUp() {
+		ApplicationContext context = new GenericXmlApplicationContext(
+				"applicationContext.xml");
+
+		dao = context.getBean("userDao", UserDao.class);
+	}
 
 	/**
-	 * @throws SQLException 
-	 * @throws ClassNotFoundException 
+	 * @throws SQLException
+	 * @throws ClassNotFoundException
 	 */
 	@Test
 	public void addAndGet() throws SQLException {
-		ApplicationContext context = new GenericXmlApplicationContext(
-				"applicationContext.xml");
 		
-		UserDao dao = context.getBean("userDao", UserDao.class);
-		
+
 		dao.deleteAll();
 		assertThat(dao.getCount(), is(0));
-		
+
 		User user1 = new User("gyumee", "박성철", "springno1");
 		User user2 = new User("leegw700", "이길원", "springno2");
 
@@ -42,19 +49,16 @@ public class UserDaoTest {
 		User userget2 = dao.get(user2.getId());
 		assertThat(userget2.getName(), is(user2.getName()));
 		assertThat(userget2.getPassword(), is(user2.getPassword()));
-		
+
 	}
-	
+
 	@Test
 	public void count() throws SQLException {
-		ApplicationContext context = new GenericXmlApplicationContext(
-				"applicationContext.xml");
 		
-		UserDao dao = context.getBean("userDao", UserDao.class);
 		User user1 = new User("gyumee", "박성철", "springno1");
 		User user2 = new User("leegw700", "이길원", "springno2");
 		User user3 = new User("bumjin", "박범진", "springno3");
-	
+
 		dao.deleteAll();
 		assertThat(dao.getCount(), is(0));
 		dao.add(user1);
@@ -65,18 +69,15 @@ public class UserDaoTest {
 		assertThat(dao.getCount(), is(3));
 
 	}
-	
-	@Test(expected=EmptyResultDataAccessException.class)
+
+	@Test(expected = EmptyResultDataAccessException.class)
 	public void getUserFailure() throws SQLException {
-		ApplicationContext context = new GenericXmlApplicationContext(
-				"applicationContext.xml");
 		
-		UserDao dao = context.getBean("userDao", UserDao.class);
 		dao.deleteAll();
 		assertThat(dao.getCount(), is(0));
-		
+
 		dao.get("unknown_id");
-		
+
 	}
 
 }
