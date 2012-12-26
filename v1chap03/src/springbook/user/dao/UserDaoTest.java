@@ -23,7 +23,7 @@ public class UserDaoTest {
 	private ApplicationContext context;
 	
 	@Autowired
-	private UserDao dao;
+	private UserDaoDeleteAll dao;
 
 	private User user1;
 	private User user2;

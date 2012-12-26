@@ -9,7 +9,7 @@
         <property name="username" value="spring"></property>
         <property name="password" value="book"></property>
     </bean>    
-    <bean id="userDao" class="springbook.user.dao.UserDao">
+    <bean id="userDao" class="springbook.user.dao.UserDaoDeleteAll">
         <property name="dataSource" ref="dataSource" />
     </bean>
 
