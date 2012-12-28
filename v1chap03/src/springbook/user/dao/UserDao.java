@@ -15,8 +15,7 @@ public class UserDao {
 	private JdbcTemplate jdbcTemplate;
 
 	public void setDataSource(DataSource dataSource) {
-		this.jdbcTemplate = new JdbcTemplate();
-		this.jdbcTemplate.setDataSource(dataSource);
+		this.jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 
 	public void add(final User user) {
