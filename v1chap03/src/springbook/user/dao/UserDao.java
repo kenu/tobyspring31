@@ -69,10 +69,8 @@ public abstract class UserDao {
     public void deleteAll() throws SQLException {
     	this.jdbcContext.executeSql("delete from users");
     }
-<<<<<<< HEAD
-=======
+
     abstract protected PreparedStatement makeStatement(Connection c) throws SQLException;
->>>>>>> template method pattern
 
 	public int getCount() throws SQLException {
     	Connection c = null;

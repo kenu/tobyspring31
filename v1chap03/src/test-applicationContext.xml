@@ -11,6 +11,6 @@
         <property name="url" value="jdbc:mysql://localhost/testdb?useUnicode=true&amp;characterEncoding=UTF8&amp;jdbcCompliantTruncation=false&amp;useOldUTF8Behavior=true"></property>
         <property name="username" value="spring"></property>
         <property name="password" value="book"></property>
-    </bean>
+    </bean>    
 
 </beans>
