@@ -11,7 +11,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 
 import springbook.user.domain.User;
 
-public class UserDao {
+public abstract class UserDao {
 	private DataSource dataSource;
 	private JdbcContext jdbcContext;
 
@@ -69,6 +69,10 @@ public class UserDao {
     public void deleteAll() throws SQLException {
     	this.jdbcContext.executeSql("delete from users");
     }
+<<<<<<< HEAD
+=======
+    abstract protected PreparedStatement makeStatement(Connection c) throws SQLException;
+>>>>>>> template method pattern
 
 	public int getCount() throws SQLException {
     	Connection c = null;
