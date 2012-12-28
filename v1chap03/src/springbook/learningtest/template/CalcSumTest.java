@@ -26,6 +26,6 @@ public class CalcSumTest {
 	@Test
 	public void multiplyOfNumbers() throws IOException {
 		Calculator calculator = new Calculator();
-		assertThat(calculator.calcSum(this.numFilepath), is(10));
+		assertThat(calculator.calcMultiply(this.numFilepath), is(24));
 	}
 }
