@@ -6,14 +6,16 @@ import springbook.user.domain.User;
 
 public interface UserDao {
 
-	public abstract void add(User user);
+	public void add(User user);
 
-	public abstract User get(String id);
+	public User get(String id);
 
-	public abstract void deleteAll();
+	public void deleteAll();
 
-	public abstract int getCount();
+	public int getCount();
 
-	public abstract List<User> getAll();
+	public List<User> getAll();
+
+	public void update(User user1);
 
 }
