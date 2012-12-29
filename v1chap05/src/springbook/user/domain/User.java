@@ -1,5 +1,6 @@
 package springbook.user.domain;
 
+
 public class User {
 	
     String id;
@@ -65,6 +66,15 @@ public class User {
 
 	public void setRecommend(int recommend) {
 		this.recommend = recommend;
+	}
+	
+	public void upgradeLevel() {
+		Level nexLevel = this.level.nextLevel();
+		if (nexLevel == null) {
+			throw new IllegalStateException(this.level + "은 업그레이드가 불가능합니다");
+		} else {
+			this.level = nexLevel;
+		}
 	}
     
 }
