@@ -3,9 +3,12 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.springframework.org/schema/beans
               http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
-	<bean id="userService" class="springbook.user.service.UserService">
-		<property name="userDao" ref="userDao"></property>
+	<bean id="userService" class="springbook.user.service.UserServiceTx">
         <property name="transactionManager" ref="transactionManager" />
+        <property name="userService" ref="userService" />
+	</bean>
+	<bean id="userServiceImpl" class="springbook.user.service.UserServiceImpl">
+        <property name="userDao" ref="userDao" />
         <property name="mailSender" ref="mailSender" />
 	</bean>
 	<bean id="mailSender" class="springbook.user.service.DummyMailSender"/>
