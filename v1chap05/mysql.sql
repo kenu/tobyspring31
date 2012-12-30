@@ -11,7 +11,8 @@ create table `springbook`.users (
     password varchar(10) not null,
     level tinyint not null,
     login int not null,
-    recommend int not null
+    recommend int not null,
+    email varchar(40) not null
 );
 
 GRANT ALL PRIVILEGES ON `testdb`.* TO spring@localhost
@@ -27,5 +28,6 @@ create table `testdb`.users (
     password varchar(10) not null,
     level tinyint not null,
     login int not null,
-    recommend int not null
+    recommend int not null,
+    email varchar(40) not null
 );
