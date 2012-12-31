@@ -2,23 +2,24 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
               http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
               http://www.springframework.org/schema/aop
-              http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+              http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+              http://www.springframework.org/schema/tx
+              http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
 	<bean id="testUserService"
 		class="springbook.user.service.UserServiceTest$TestUserServiceImpl"
 		parent="userService"></bean>
-	<bean id="transactionAdvice" class="org.springframework.transaction.interceptor.TransactionInterceptor">
-		<property name="transactionManager" ref="transactionManager"></property>
-		<property name="transactionAttributes">
-			<props>
-				<prop key="get*">PROPAGATION_REQUIRED,readOnly,timeout_30</prop>
-				<prop key="upgrade*">PROPAGATION_REQUIRES_NEW,ISOLATION_SERIALIZABLE</prop>
-				<prop key="*">PROPAGATION_REQUIRED</prop>
-			</props>
-		</property>
-	</bean>
+		
+	<tx:advice id="transactionAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="get*" propagation="REQUIRED" read-only="true" timeout="30"/>
+			<tx:method name="upgrade*" propagation="REQUIRES_NEW" isolation="SERIALIZABLE"/>
+			<tx:method name="*" propagation="REQUIRED"/>
+		</tx:attributes>
+	</tx:advice>	
 	<bean
 		class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"></bean>
 	<aop:config>
