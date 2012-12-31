@@ -9,14 +9,20 @@
 	<bean id="testUserService"
 		class="springbook.user.service.UserServiceTest$TestUserServiceImpl"
 		parent="userService"></bean>
-	<bean id="transactionAdvice" class="springbook.user.service.TransactionAdvice">
+	<bean id="transactionAdvice" class="org.springframework.transaction.interceptor.TransactionInterceptor">
 		<property name="transactionManager" ref="transactionManager"></property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="get*">PROPAGATION_REQUIRED,readOnly,timeout_30</prop>
+				<prop key="upgrade*">PROPAGATION_REQUIRES_NEW,ISOLATION_SERIALIZABLE</prop>
+				<prop key="*">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
 	</bean>
 	<bean
 		class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"></bean>
 	<aop:config>
-		<aop:pointcut id="transactionPointcut" expression="execution(* *..*ServiceImpl.upgrade*(..))"/>
-		<aop:advisor advice-ref="transactionAdvice" pointcut-ref="transactionPointcut"/>
+		<aop:advisor advice-ref="transactionAdvice" pointcut="execution(* *..*ServiceImpl.upgrade*(..))"/>
 	</aop:config>
 	<bean id="userService" class="springbook.user.service.UserServiceImpl">
 		<property name="userDao" ref="userDao" />
