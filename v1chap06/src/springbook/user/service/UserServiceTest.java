@@ -21,6 +21,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import springbook.user.dao.UserDao;
@@ -203,18 +204,10 @@ public class UserServiceTest {
 	}
 	
 	@Test
+	@Transactional
 	public void transactionSync() {
-		DefaultTransactionDefinition txDefinition = new DefaultTransactionDefinition();
-		TransactionStatus txStatus = transactionManager.getTransaction(txDefinition);
-		
-		try {
-			userService.deleteAll();
-			userService.add(users.get(0));
-			userService.add(users.get(1));
-			assertThat(userDao.getCount(), is(2));
-
-		} finally {
-			transactionManager.rollback(txStatus);
-		}
+		userService.deleteAll();
+		userService.add(users.get(0));
+		userService.add(users.get(1));
 	}
 }
