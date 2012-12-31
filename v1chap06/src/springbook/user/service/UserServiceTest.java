@@ -204,19 +204,17 @@ public class UserServiceTest {
 	
 	@Test
 	public void transactionSync() {
-		userDao.deleteAll();
-		assertThat(userDao.getCount(), is(0));
-		
 		DefaultTransactionDefinition txDefinition = new DefaultTransactionDefinition();
 		TransactionStatus txStatus = transactionManager.getTransaction(txDefinition);
 		
-		userService.add(users.get(0));
-		userService.add(users.get(1));
-		assertThat(userDao.getCount(), is(2));
-		
-		transactionManager.rollback(txStatus);
+		try {
+			userService.deleteAll();
+			userService.add(users.get(0));
+			userService.add(users.get(1));
+			assertThat(userDao.getCount(), is(2));
 
-		assertThat(userDao.getCount(), is(0));
-		
+		} finally {
+			transactionManager.rollback(txStatus);
+		}
 	}
 }
