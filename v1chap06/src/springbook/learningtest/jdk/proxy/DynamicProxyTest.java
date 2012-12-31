@@ -79,7 +79,7 @@ public class DynamicProxyTest {
 		NameMatchMethodPointcut classMethodPointcut = new NameMatchMethodPointcut() {
 			private static final long serialVersionUID = 1L;
 
-			public ClassFilter getclassFilter() {
+			public ClassFilter getClassFilter() {
 				return new ClassFilter() {
 
 					@Override
