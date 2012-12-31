@@ -23,7 +23,7 @@
 	<bean
 		class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"></bean>
 	<aop:config>
-		<aop:advisor advice-ref="transactionAdvice" pointcut="execution(* *..*ServiceImpl.upgrade*(..))"/>
+		<aop:advisor advice-ref="transactionAdvice" pointcut="bean(*Service)"/>
 	</aop:config>
 	<bean id="userService" class="springbook.user.service.UserServiceImpl">
 		<property name="userDao" ref="userDao" />
