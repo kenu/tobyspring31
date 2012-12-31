@@ -12,7 +12,7 @@
 	<bean
 		class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"></bean>
 	<bean id="transactionPointcut" class="springbook.user.service.NameMatchClassMethodPointcut">
-		<property name="mappedClassName" value="*ServiceImpl"></property>
+		<property name="mappedClassName" value="*NotServiceImpl"></property>
 		<property name="mappedName" value="upgrade*"></property>
 	</bean>
 	<bean id="transactionAdvisor" class="org.springframework.aop.support.DefaultPointcutAdvisor">
