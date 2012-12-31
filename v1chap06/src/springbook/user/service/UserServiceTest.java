@@ -11,19 +11,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.sql.DataSource;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.aop.framework.ProxyFactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.mail.MailSender;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.PlatformTransactionManager;
 
 import springbook.user.dao.UserDao;
 import springbook.user.domain.Level;
@@ -33,16 +27,10 @@ import springbook.user.domain.User;
 @ContextConfiguration(locations = "/test-applicationContext.xml")
 public class UserServiceTest {
 	@Autowired
-	ApplicationContext context;
-
+	UserService userService;
 	@Autowired
-	PlatformTransactionManager transactionManager;
+	UserService testUserService;
 
-	@Autowired
-	DataSource dataSource;
-
-	@Autowired
-	UserServiceImpl userServiceImpl;
 	@Autowired
 	UserDao userDao;
 	@Autowired
@@ -52,21 +40,17 @@ public class UserServiceTest {
 
 	@Before
 	public void setUp() {
-		users = Arrays.asList(new User("bumjin", "박범진", "p1", Level.BASIC,
-				MIN_LOGCOUNT_FOR_SILVER - 1, 0, "bumjin@ksug.org"), new User(
-				"joytouch", "강명성", "p2", Level.BASIC, MIN_LOGCOUNT_FOR_SILVER,
-				0, "joytouch@ksug.org"),
-				new User("erwins", "신승한", "p3", Level.SILVER, 60,
-						MIN_RECCOMEND_FOR_GOLD - 1, "erwins@ksug.org"),
-				new User("madnite1", "이상호", "p4", Level.SILVER, 60,
-						MIN_RECCOMEND_FOR_GOLD, "madnite1@ksug.org"), new User(
-						"green", "오민규", "p5", Level.GOLD, 100,
-						Integer.MAX_VALUE, "green@ksug.org"));
+		users = Arrays.asList(
+				new User("bumjin", "박범진", "p1", Level.BASIC, MIN_LOGCOUNT_FOR_SILVER - 1, 0, "bumjin@ksug.org"),
+				new User("joytouch", "강명성", "p2", Level.BASIC, MIN_LOGCOUNT_FOR_SILVER, 0, "joytouch@ksug.org"),
+				new User("erwins", "신승한", "p3", Level.SILVER, 60, MIN_RECCOMEND_FOR_GOLD - 1, "erwins@ksug.org"),
+				new User("madnite1", "이상호", "p4", Level.SILVER, 60, MIN_RECCOMEND_FOR_GOLD, "madnite1@ksug.org"), 
+				new User("green", "오민규", "p5", Level.GOLD, 100, Integer.MAX_VALUE, "green@ksug.org"));
 	}
 
 	@Test
 	public void bean() {
-		assertThat(this.userServiceImpl, is(notNullValue()));
+		assertThat(this.userService, is(notNullValue()));
 	}
 
 	@Test
@@ -115,8 +99,8 @@ public class UserServiceTest {
 		User userWithoutLevel = users.get(0);
 		userWithoutLevel.setLevel(null);
 
-		userServiceImpl.add(userWithLevel);
-		userServiceImpl.add(userWithoutLevel);
+		userService.add(userWithLevel);
+		userService.add(userWithoutLevel);
 
 		User userWithLevelRead = userDao.get(userWithLevel.getId());
 		User userWithoutLevelRead = userDao.get(userWithoutLevel.getId());
@@ -127,12 +111,8 @@ public class UserServiceTest {
 
 	}
 
-	static class TestUserService extends UserServiceImpl {
-		private String id;
-
-		private TestUserService(String id) {
-			this.id = id;
-		}
+	static class TestUserServiceImpl extends UserServiceImpl {
+		private String id = "madnite1";
 
 		protected void upgradeLevel(User user) {
 			if (user.getId().equals(this.id))
@@ -185,24 +165,13 @@ public class UserServiceTest {
 	}
 
 	@Test
-	@DirtiesContext
 	public void upgradeAllOrNothing() throws Exception {
-		UserServiceImpl testUserService = new TestUserService(users.get(3)
-				.getId());
-		testUserService.setUserDao(this.userDao);
-		testUserService.setMailSender(mailSender);
-
-		ProxyFactoryBean txProxyFactoryBean = context.getBean("&userService",
-				ProxyFactoryBean.class);
-		txProxyFactoryBean.setTarget(testUserService);
-		UserService txUserService = (UserService) txProxyFactoryBean.getObject();
-
 		userDao.deleteAll();
 		for (User user : users)
 			userDao.add(user);
 
 		try {
-			txUserService.upgradeLevels();
+			this.testUserService.upgradeLevels();
 			fail("TestUserServiceException expected");
 		} catch (TestUserServiceException e) {
 		}
