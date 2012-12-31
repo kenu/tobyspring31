@@ -13,7 +13,7 @@ public interface UserService {
 	User get(String id);
 	@Transactional(readOnly=true)
 	List<User> getAll();
-	void deleteall();
+	void deleteAll();
 	void update(User user);
 
 	public void upgradeLevels();

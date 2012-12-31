@@ -19,6 +19,7 @@ import org.springframework.dao.TransientDataAccessResourceException;
 import org.springframework.mail.MailSender;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import springbook.user.dao.UserDao;
 import springbook.user.domain.Level;
@@ -27,6 +28,8 @@ import springbook.user.domain.User;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "/test-applicationContext.xml")
 public class UserServiceTest {
+	@Autowired
+	PlatformTransactionManager transactionManager;
 	@Autowired
 	UserService userService;
 	@Autowired
@@ -195,5 +198,13 @@ public class UserServiceTest {
 	@Test(expected=TransientDataAccessResourceException.class)
 	public void readOnlyTransactionAttribute() {
 		testUserService.getAll();
+	}
+	
+	@Test
+	public void transactionSync() {
+		userService.deleteAll();
+		
+		userService.add(users.get(0));
+		userService.add(users.get(1));
 	}
 }

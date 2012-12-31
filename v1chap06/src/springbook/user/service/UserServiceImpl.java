@@ -78,7 +78,7 @@ public class UserServiceImpl implements UserService {
 		return userDao.getAll();
 	}
 
-	public void deleteall() {
+	public void deleteAll() {
 		userDao.deleteAll();
 	}
 
