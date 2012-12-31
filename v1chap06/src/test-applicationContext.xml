@@ -12,10 +12,9 @@
 	<bean id="testUserService"
 		class="springbook.user.service.UserServiceTest$TestUserServiceImpl"
 		parent="userService"></bean>
-		
+	<tx:annotation-driven/>
 	<tx:advice id="transactionAdvice">
 		<tx:attributes>
-			<tx:method name="get*" read-only="true"/>
 			<tx:method name="*"/>
 		</tx:attributes>
 	</tx:advice>	

@@ -15,6 +15,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.TransientDataAccessResourceException;
 import org.springframework.mail.MailSender;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -119,6 +120,13 @@ public class UserServiceTest {
 				throw new TestUserServiceException();
 			super.upgradeLevel(user);
 		}
+		
+		public List<User> getAll() {
+			for(User user : super.getAll()) {
+				super.update(user);
+			}
+			return null;
+		}
 	}
 
 	static class TestUserServiceException extends RuntimeException {
@@ -182,5 +190,10 @@ public class UserServiceTest {
 	@Test
 	public void advisorAutoProxyCreator() {
 		assertThat(testUserService, is(java.lang.reflect.Proxy.class));
+	}
+	
+	@Test(expected=TransientDataAccessResourceException.class)
+	public void readOnlyTransactionAttribute() {
+		testUserService.getAll();
 	}
 }
