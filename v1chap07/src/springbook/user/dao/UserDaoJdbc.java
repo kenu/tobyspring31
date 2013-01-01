@@ -3,6 +3,7 @@ package springbook.user.dao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import javax.sql.DataSource;
 
@@ -13,10 +14,10 @@ import springbook.user.domain.Level;
 import springbook.user.domain.User;
 
 public class UserDaoJdbc implements UserDao {
-	private String sqlAdd;
+	private Map<String, String> sqlMap;
 
-	public void setSqlAdd(String sqlAdd) {
-		this.sqlAdd = sqlAdd;
+	public void setSqlMap(Map<String, String> sqlMap) {
+		this.sqlMap = sqlMap;
 	}
 
 	private RowMapper<User> userMapper = new RowMapper<User>() {
@@ -40,34 +41,33 @@ public class UserDaoJdbc implements UserDao {
 	}
 
 	public void add(final User user) {
-		this.jdbcTemplate.update(this.sqlAdd, user.getId(), user.getName(),
+		this.jdbcTemplate.update(this.sqlMap.get("add"), user.getId(), user.getName(),
 				user.getPassword(), user.getLevel().intValue(),
 				user.getLogin(), user.getRecommend(), user.getEmail());
 	}
 
 	public User get(String id) {
 		return this.jdbcTemplate.queryForObject(
-				"select * from users where id = ?", new Object[] { id },
+				this.sqlMap.get("get"), new Object[] { id },
 				userMapper);
 	}
 
 	public void deleteAll() {
-		this.jdbcTemplate.update("delete from users");
+		this.jdbcTemplate.update(this.sqlMap.get("deleteAll"));
 	}
 
 	public int getCount() {
-		return this.jdbcTemplate.queryForInt("select count(*) from users");
+		return this.jdbcTemplate.queryForInt(this.sqlMap.get("getCount"));
 	}
 
 	public List<User> getAll() {
-		return this.jdbcTemplate.query("select * from users order by id",
+		return this.jdbcTemplate.query(this.sqlMap.get("getAll"),
 				userMapper);
 	}
 
 	public void update(User user) {
 		this.jdbcTemplate.update(
-				"update users set name = ?, password = ?, level = ?, login = ?, "
-						+ "recommend = ?, email = ? where id = ?",
+				this.sqlMap.get("update"),
 				user.getName(), user.getPassword(), user.getLevel().intValue(),
 				user.getLogin(), user.getRecommend(), user.getEmail(),
 				user.getId());

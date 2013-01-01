@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
 	xmlns:tx="http://www.springframework.org/schema/tx"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
               http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
@@ -12,16 +11,16 @@
 	<bean id="testUserService"
 		class="springbook.user.service.UserServiceTest$TestUserServiceImpl"
 		parent="userService"></bean>
-	<tx:annotation-driven/>
+	<tx:annotation-driven />
 	<tx:advice id="transactionAdvice">
 		<tx:attributes>
-			<tx:method name="*"/>
+			<tx:method name="*" />
 		</tx:attributes>
-	</tx:advice>	
+	</tx:advice>
 	<bean
 		class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"></bean>
 	<aop:config>
-		<aop:advisor advice-ref="transactionAdvice" pointcut="bean(*Service)"/>
+		<aop:advisor advice-ref="transactionAdvice" pointcut="bean(*Service)" />
 	</aop:config>
 	<bean id="userService" class="springbook.user.service.UserServiceImpl">
 		<property name="userDao" ref="userDao" />
@@ -34,8 +33,19 @@
 	</bean>
 	<bean id="userDao" class="springbook.user.dao.UserDaoJdbc">
 		<property name="dataSource" ref="dataSource" />
-		<property name="sqlAdd" value="insert into users(id, name, password, level, 
-		    login, recommend, email) values (?,?,?,?,?,?,?)"></property>
+		<property name="sqlMap">
+			<map>
+				<entry key="add"
+					value="insert into users(id, name, password, level, login, 
+					recommend, email) values (?,?,?,?,?,?,?)"></entry>
+				<entry key="get" value="select * from users where id = ?"></entry>
+				<entry key="deleteAll" value="delete from users"></entry>
+				<entry key="getCount" value="select count(*) from users"></entry>
+				<entry key="getAll" value="select * from users order by id"></entry>
+				<entry key="update" value="update users set name = ?, password = ?, 
+				    level = ?, login = ?, recommend = ?, email = ? where id = ?"></entry>
+			</map>
+		</property>
 	</bean>
 	<bean id="dataSource"
 		class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
