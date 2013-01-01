@@ -13,6 +13,12 @@ import springbook.user.domain.Level;
 import springbook.user.domain.User;
 
 public class UserDaoJdbc implements UserDao {
+	private String sqlAdd;
+
+	public void setSqlAdd(String sqlAdd) {
+		this.sqlAdd = sqlAdd;
+	}
+
 	private RowMapper<User> userMapper = new RowMapper<User>() {
 		public User mapRow(ResultSet rs, int rowNum) throws SQLException {
 			User user = new User();
@@ -34,10 +40,8 @@ public class UserDaoJdbc implements UserDao {
 	}
 
 	public void add(final User user) {
-		this.jdbcTemplate.update(
-				"insert into users(id, name, password, level, login, recommend, email) "
-						+ "values (?,?,?,?,?,?,?)", user.getId(),
-				user.getName(), user.getPassword(), user.getLevel().intValue(),
+		this.jdbcTemplate.update(this.sqlAdd, user.getId(), user.getName(),
+				user.getPassword(), user.getLevel().intValue(),
 				user.getLogin(), user.getRecommend(), user.getEmail());
 	}
 
