@@ -3,7 +3,6 @@ package springbook.user.dao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
 
 import javax.sql.DataSource;
 
@@ -12,12 +11,13 @@ import org.springframework.jdbc.core.RowMapper;
 
 import springbook.user.domain.Level;
 import springbook.user.domain.User;
+import springbook.user.sqlservice.SqlService;
 
 public class UserDaoJdbc implements UserDao {
-	private Map<String, String> sqlMap;
-
-	public void setSqlMap(Map<String, String> sqlMap) {
-		this.sqlMap = sqlMap;
+	private SqlService sqlService;
+	
+	public void setSqlService(SqlService sqlService) {
+		this.sqlService = sqlService;
 	}
 
 	private RowMapper<User> userMapper = new RowMapper<User>() {
@@ -41,33 +41,33 @@ public class UserDaoJdbc implements UserDao {
 	}
 
 	public void add(final User user) {
-		this.jdbcTemplate.update(this.sqlMap.get("add"), user.getId(), user.getName(),
+		this.jdbcTemplate.update(this.sqlService.getSql("userAdd"), user.getId(), user.getName(),
 				user.getPassword(), user.getLevel().intValue(),
 				user.getLogin(), user.getRecommend(), user.getEmail());
 	}
 
 	public User get(String id) {
 		return this.jdbcTemplate.queryForObject(
-				this.sqlMap.get("get"), new Object[] { id },
+				this.sqlService.getSql("userGet"), new Object[] { id },
 				userMapper);
 	}
 
 	public void deleteAll() {
-		this.jdbcTemplate.update(this.sqlMap.get("deleteAll"));
+		this.jdbcTemplate.update(this.sqlService.getSql("userDeleteAll"));
 	}
 
 	public int getCount() {
-		return this.jdbcTemplate.queryForInt(this.sqlMap.get("getCount"));
+		return this.jdbcTemplate.queryForInt(this.sqlService.getSql("userGetCount"));
 	}
 
 	public List<User> getAll() {
-		return this.jdbcTemplate.query(this.sqlMap.get("getAll"),
+		return this.jdbcTemplate.query(this.sqlService.getSql("userGetAll"),
 				userMapper);
 	}
 
 	public void update(User user) {
 		this.jdbcTemplate.update(
-				this.sqlMap.get("update"),
+				this.sqlService.getSql("userUpdate"),
 				user.getName(), user.getPassword(), user.getLevel().intValue(),
 				user.getLogin(), user.getRecommend(), user.getEmail(),
 				user.getId());
