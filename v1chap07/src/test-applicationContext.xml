@@ -33,16 +33,19 @@
 	</bean>
 	<bean id="userDao" class="springbook.user.dao.UserDaoJdbc">
 		<property name="dataSource" ref="dataSource" />
+		<property name="sqlService" ref="sqlService"></property>
+	</bean>
+	<bean id="sqlService" class="springbook.user.sqlservice.SimpleSqlService">
 		<property name="sqlMap">
 			<map>
-				<entry key="add"
+				<entry key="userAdd"
 					value="insert into users(id, name, password, level, login, 
 					recommend, email) values (?,?,?,?,?,?,?)"></entry>
-				<entry key="get" value="select * from users where id = ?"></entry>
-				<entry key="deleteAll" value="delete from users"></entry>
-				<entry key="getCount" value="select count(*) from users"></entry>
-				<entry key="getAll" value="select * from users order by id"></entry>
-				<entry key="update" value="update users set name = ?, password = ?, 
+				<entry key="userGet" value="select * from users where id = ?"></entry>
+				<entry key="userDeleteAll" value="delete from users"></entry>
+				<entry key="userGetCount" value="select count(*) from users"></entry>
+				<entry key="userGetAll" value="select * from users order by id"></entry>
+				<entry key="userUpdate" value="update users set name = ?, password = ?, 
 				    level = ?, login = ?, recommend = ?, email = ? where id = ?"></entry>
 			</map>
 		</property>
