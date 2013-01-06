@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xmlns:aop="http://www.springframework.org/schema/aop"
-	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
               http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
               http://www.springframework.org/schema/aop
@@ -16,7 +14,7 @@
 		class="springbook.user.service.UserServiceTest$TestUserServiceImpl"
 		parent="userService"></bean>
 	<tx:annotation-driven />
-	
+
 	<context:annotation-config />
 	<tx:advice id="transactionAdvice">
 		<tx:attributes>
@@ -42,11 +40,13 @@
 		<property name="sqlService" ref="sqlService"></property>
 	</bean>
 	<bean id="sqlService" class="springbook.user.sqlservice.OxmSqlService">
-	    <property name="unmarshaller" ref="unmarshaller"></property>
-	    <property name="sqlmap" value="classpath:springbook/user/dao/sqlmap.xml"></property>
+		<property name="unmarshaller" ref="unmarshaller"></property>
+		<property name="sqlRegistry" ref="sqlRegistry"></property>
 	</bean>
+	<bean id="sqlRegistry"
+		class="springbook.user.sqlservice.updatable.ConcurrentHashMapSqlRegistry"></bean>
 	<bean id="unmarshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
-	    <property name="contextPath" value="springbook.user.sqlservice.jaxb"></property>
+		<property name="contextPath" value="springbook.user.sqlservice.jaxb"></property>
 	</bean>
 	<bean id="dataSource"
 		class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
