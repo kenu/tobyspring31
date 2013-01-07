@@ -20,7 +20,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import springbook.user.dao.UserDao;
 import springbook.user.service.DummyMailSender;
 import springbook.user.service.UserService;
-import springbook.user.service.UserServiceImpl;
 import springbook.user.service.UserServiceTest.TestUserService;
 
 import com.mysql.jdbc.Driver;
@@ -60,14 +59,6 @@ public class TestApplicationContext {
 	
 	@Autowired
 	UserDao userDao;
-	
-	@Bean
-	public UserService userService() {
-		UserServiceImpl userService = new UserServiceImpl();
-		userService.setMailSender(mailSender());
-		userService.setUserDao(this.userDao);
-		return userService;
-	}
 	
 	@Bean
 	public UserService testUserService() {
