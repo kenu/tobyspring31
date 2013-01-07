@@ -27,10 +27,6 @@
 	<aop:config>
 		<aop:advisor advice-ref="transactionAdvice" pointcut="bean(*Service)" />
 	</aop:config>
-	<bean id="userService" class="springbook.user.service.UserServiceImpl">
-		<property name="userDao" ref="userDao" />
-		<property name="mailSender" ref="mailSender" />
-	</bean>
 
 	<bean id="sqlService" class="springbook.user.sqlservice.OxmSqlService">
 	    <property name="unmarshaller" ref="unmarshaller"></property>
