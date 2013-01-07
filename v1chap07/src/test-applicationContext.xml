@@ -17,7 +17,6 @@
 		parent="userService"></bean>
 	<tx:annotation-driven />
 	
-	<context:annotation-config />
 	<tx:advice id="transactionAdvice">
 		<tx:attributes>
 			<tx:method name="*" />
