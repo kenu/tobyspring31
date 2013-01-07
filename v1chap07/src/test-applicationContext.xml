@@ -31,11 +31,7 @@
 		<property name="userDao" ref="userDao" />
 		<property name="mailSender" ref="mailSender" />
 	</bean>
-	<bean id="mailSender" class="springbook.user.service.DummyMailSender" />
-	<bean id="userDao" class="springbook.user.dao.UserDaoJdbc">
-		<property name="dataSource" ref="dataSource" />
-		<property name="sqlService" ref="sqlService"></property>
-	</bean>
+
 	<bean id="sqlService" class="springbook.user.sqlservice.OxmSqlService">
 	    <property name="unmarshaller" ref="unmarshaller"></property>
 	    <property name="sqlmap" value="classpath:springbook/user/dao/sqlmap.xml"></property>
