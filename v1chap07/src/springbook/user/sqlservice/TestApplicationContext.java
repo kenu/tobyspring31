@@ -16,6 +16,7 @@ import springbook.user.dao.UserDaoJdbc;
 import springbook.user.service.DummyMailSender;
 import springbook.user.service.UserService;
 import springbook.user.service.UserServiceImpl;
+import springbook.user.service.UserServiceTest.TestUserService;
 
 import com.mysql.jdbc.Driver;
 
@@ -44,10 +45,12 @@ public class TestApplicationContext {
 		return tm;
 	}
 	
+	/**
+	 * @return
+	 */
 	@Bean
 	public MailSender mailSender() {
-		MailSender mailSender = new DummyMailSender();
-		return mailSender;
+		return new DummyMailSender();
 	}
 	
 	@Bean
@@ -64,5 +67,13 @@ public class TestApplicationContext {
 		userService.setMailSender(mailSender());
 		userService.setUserDao(userDao());
 		return userService;
+	}
+	
+	@Bean
+	public UserService testUserService() {
+		TestUserService testService = new TestUserService();
+		testService.setUserDao(userDao());
+		testService.setMailSender(mailSender());
+		return testService;
 	}
 }

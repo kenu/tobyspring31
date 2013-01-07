@@ -12,9 +12,7 @@
               http://www.springframework.org/schema/context/spring-context-3.0.xsd
               http://www.springframework.org/schema/tx
               http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
-	<bean id="testUserService"
-		class="springbook.user.service.UserServiceTest$TestUserServiceImpl"
-		parent="userService"></bean>
+
 	<tx:annotation-driven />
 	
 	<tx:advice id="transactionAdvice">
@@ -22,8 +20,6 @@
 			<tx:method name="*" />
 		</tx:attributes>
 	</tx:advice>
-	<bean
-		class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"></bean>
 	<aop:config>
 		<aop:advisor advice-ref="transactionAdvice" pointcut="bean(*Service)" />
 	</aop:config>

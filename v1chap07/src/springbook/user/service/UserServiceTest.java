@@ -26,9 +26,10 @@ import org.springframework.transaction.annotation.Transactional;
 import springbook.user.dao.UserDao;
 import springbook.user.domain.Level;
 import springbook.user.domain.User;
+import springbook.user.sqlservice.TestApplicationContext;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "/test-applicationContext.xml")
+@ContextConfiguration(classes=TestApplicationContext.class)
 public class UserServiceTest {
 	@Autowired
 	PlatformTransactionManager transactionManager;
@@ -117,7 +118,7 @@ public class UserServiceTest {
 
 	}
 
-	static class TestUserServiceImpl extends UserServiceImpl {
+	public static class TestUserService extends UserServiceImpl {
 		private String id = "madnite1";
 
 		protected void upgradeLevel(User user) {
