@@ -14,6 +14,8 @@ import org.springframework.transaction.PlatformTransactionManager;
 import springbook.user.dao.UserDao;
 import springbook.user.dao.UserDaoJdbc;
 import springbook.user.service.DummyMailSender;
+import springbook.user.service.UserService;
+import springbook.user.service.UserServiceImpl;
 
 import com.mysql.jdbc.Driver;
 
@@ -54,5 +56,13 @@ public class TestApplicationContext {
 		userDao.setDataSource(dataSource());
 		userDao.setSqlService(this.sqlService);
 		return userDao;
+	}
+	
+	@Bean
+	public UserService userService() {
+		UserServiceImpl userService = new UserServiceImpl();
+		userService.setMailSender(mailSender());
+		userService.setUserDao(userDao());
+		return userService;
 	}
 }
