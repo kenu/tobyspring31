@@ -12,8 +12,6 @@
               http://www.springframework.org/schema/context/spring-context-3.0.xsd
               http://www.springframework.org/schema/tx
               http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
-
-	<tx:annotation-driven />
 	
 	<tx:advice id="transactionAdvice">
 		<tx:attributes>
@@ -23,13 +21,5 @@
 	<aop:config>
 		<aop:advisor advice-ref="transactionAdvice" pointcut="bean(*Service)" />
 	</aop:config>
-
-	<bean id="sqlService" class="springbook.user.sqlservice.OxmSqlService">
-	    <property name="unmarshaller" ref="unmarshaller"></property>
-	    <property name="sqlmap" value="classpath:springbook/user/dao/sqlmap.xml"></property>
-	</bean>
-	<bean id="unmarshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
-	    <property name="contextPath" value="springbook.user.sqlservice.jaxb"></property>
-	</bean>
 
 </beans>
