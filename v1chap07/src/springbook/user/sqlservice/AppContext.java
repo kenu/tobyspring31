@@ -6,13 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.ImportResource;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
-import org.springframework.oxm.Unmarshaller;
-import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -24,6 +21,7 @@ import com.mysql.jdbc.Driver;
 @EnableTransactionManagement
 @ImportResource("/test-applicationContext.xml")
 @ComponentScan(basePackages="springbook.user")
+@Import(SqlServiceContext.class)
 public class AppContext {
 
 	@Bean
@@ -47,21 +45,5 @@ public class AppContext {
 		
 	@Autowired
 	UserDao userDao;
-	
-	@Bean
-	public Unmarshaller unmarshaller() {
-		Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
-		marshaller.setContextPath("springbook.user.sqlservice.jaxb");
-		return marshaller;
-	}
-	
-	@Bean
-	public SqlService sqlService() {
-		OxmSqlService sqlService = new OxmSqlService();
-		sqlService.setUnmarshaller(unmarshaller());
-		Resource resource = new ClassPathResource("springbook/user/dao/sqlmap.xml");
-		sqlService.setSqlmap(resource);
-		return sqlService;
-	}
 	
 }
