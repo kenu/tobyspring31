@@ -26,10 +26,11 @@ import org.springframework.transaction.annotation.Transactional;
 import springbook.user.dao.UserDao;
 import springbook.user.domain.Level;
 import springbook.user.domain.User;
-import springbook.user.sqlservice.TestApplicationContext;
+import springbook.user.sqlservice.AppContext;
+import springbook.user.sqlservice.TestAppContext;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes=TestApplicationContext.class)
+@ContextConfiguration(classes={TestAppContext.class, AppContext.class})
 public class UserServiceTest {
 	@Autowired
 	PlatformTransactionManager transactionManager;
